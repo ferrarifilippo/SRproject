@@ -182,6 +182,7 @@ if __name__ == "__main__":
     #download_category("sofa")
 
     download_mesh("00033")
+    
     mesh = o3d.io.read_triangle_mesh("data/mesh/00033.ply")
     mesh.compute_vertex_normals()
     o3d.visualization.draw_geometries([mesh])
