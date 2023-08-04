@@ -49,7 +49,7 @@ def main():
 
 
     # Save the point cloud to a PLY file
-    output_file = dir_path + "/" + "output2.ply"
+    output_file = dir_path + "/" + "output.pcd"
     o3d.io.write_point_cloud(output_file, point_cloud)
     print("Point cloud saved to:", output_file)
 
