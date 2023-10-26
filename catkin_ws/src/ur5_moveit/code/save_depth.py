@@ -7,6 +7,7 @@ import rospy
 import open3d as o3d
 import numpy as np
 from sensor_msgs.msg import PointCloud2, PointField
+import time
 import sensor_msgs.point_cloud2 as pc2
 
 
@@ -87,17 +88,19 @@ def read_image(message):
     dir_path = os.path.dirname(os.path.realpath(__file__))
     voxel_size = 0.05
 
-    data_path = '/../results/'
+    data_path = '/../results/beer/'
 
     pcd_files = []
     
-    if(count<=9):
+    if(count<1):
         points = convertCloudFromRosToOpen3d(message)
-        output_filename = os.path.abspath(dir_path + data_path) + "conversion_result_{count}.pcd"
+        output_filename = os.path.abspath(dir_path + data_path) + f"/conversion_result_{count}_4.pcd"
 
         o3d.io.write_point_cloud(output_filename, points)
+
+        time.sleep(2)
         count+=1
-    elif(count==10):
+    elif(count==1):
         # Load point clouds
         for root, dirs, files in os.walk(os.path.abspath(dir_path + data_path)):
             for file in files:
@@ -114,7 +117,7 @@ def read_image(message):
             trans12 = multiway_registration(pcd2, pcd1, np.identity(4))
             pcd2.transform(trans12.transformation)
             pcd1 = pcd1 + pcd2
-        print('test')
+        
         o3d.visualization.draw_geometries([pcd1])
         count+=1
 

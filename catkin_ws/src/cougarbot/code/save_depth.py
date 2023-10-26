@@ -7,6 +7,7 @@ import rospy
 import open3d as o3d
 import numpy as np
 from sensor_msgs.msg import PointCloud2, PointField
+import time
 import sensor_msgs.point_cloud2 as pc2
 
 
@@ -84,6 +85,7 @@ def multiway_registration(source, target, trans_init):
 
 def read_image(message):
     global count
+    print('test2')
     dir_path = os.path.dirname(os.path.realpath(__file__))
     voxel_size = 0.05
 
@@ -93,9 +95,10 @@ def read_image(message):
     
     if(count<=9):
         points = convertCloudFromRosToOpen3d(message)
-        output_filename = os.path.abspath(dir_path + data_path) + "conversion_result_{count}.pcd"
-
+        output_filename = os.path.abspath(dir_path + data_path) + f"conversion_result_{count}.pcd"
         o3d.io.write_point_cloud(output_filename, points)
+
+        time.sleep(2)
         count+=1
     elif(count==10):
         # Load point clouds
@@ -120,6 +123,7 @@ def read_image(message):
 
 count = 0
 rospy.init_node("read_image")
+print('test1')
 sub = rospy.Subscriber('/camera/depth/points', PointCloud2, read_image)
 rospy.spin()
 

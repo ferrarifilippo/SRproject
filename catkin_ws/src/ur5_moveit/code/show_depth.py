@@ -1,8 +1,6 @@
-
 #!/usr/bin/env python3
 
 from ctypes import *
-import os
 import rospy
 import open3d as o3d
 import numpy as np
@@ -65,62 +63,12 @@ def convertCloudFromRosToOpen3d(ros_cloud):
     # return
     return open3d_cloud
 
-def downsample_point_cloud(pcd, voxel_size):
-    return pcd.voxel_down_sample(voxel_size)
-
-def preprocess_point_cloud(pcd, voxel_size):
-    pcd = downsample_point_cloud(pcd, voxel_size)
-    pcd.estimate_normals(search_param=o3d.geometry.KDTreeSearchParamHybrid(
-        radius=2 * voxel_size, max_nn=30))
-    return pcd
-
-def multiway_registration(source, target, trans_init):
-    distance_threshold = 0.02
-    result = o3d.pipelines.registration.registration_icp(
-        source, target, distance_threshold, trans_init,
-        o3d.pipelines.registration.TransformationEstimationPointToPoint(),
-        o3d.pipelines.registration.ICPConvergenceCriteria(max_iteration=200))
-    return result    
-
 def read_image(message):
-    global count
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    voxel_size = 0.05
+    points = convertCloudFromRosToOpen3d(message)
+    o3d.visualization.draw_geometries([points])
 
-    data_path = '/../results/'
 
-    pcd_files = []
-    
-    if(count<=9):
-        points = convertCloudFromRosToOpen3d(message)
-        output_filename = os.path.abspath(dir_path + data_path) + "conversion_result_{count}.pcd"
 
-        o3d.io.write_point_cloud(output_filename, points)
-        count+=1
-    elif(count==10):
-        # Load point clouds
-        for root, dirs, files in os.walk(os.path.abspath(dir_path + data_path)):
-            for file in files:
-                print(file)
-                pcd_files.append(os.path.join(root, file))
-
-        pcd1 = o3d.io.read_point_cloud(pcd_files[0])
-        pcd1 = preprocess_point_cloud(pcd1, voxel_size)
-        pcd_files.pop()
-
-        for pcd_file in pcd_files:
-            pcd2 = o3d.io.read_point_cloud(pcd_file)
-            # Perform multiway registration
-            trans12 = multiway_registration(pcd2, pcd1, np.identity(4))
-            pcd2.transform(trans12.transformation)
-            pcd1 = pcd1 + pcd2
-        print('test')
-        o3d.visualization.draw_geometries([pcd1])
-        count+=1
-
-count = 0
 rospy.init_node("read_image")
 sub = rospy.Subscriber('/camera/depth/points', PointCloud2, read_image)
 rospy.spin()
-
-
