@@ -12,7 +12,7 @@ from moveit_commander.conversions import pose_to_list
 from trajectories.circular_move import circular_movement
 from trajectories.box_move import box_movement
 from trajectories.bell_move import bell_movement
-
+from trajectories.ambient_move import ambient_movement
 
 def initial_position_move(robot_move):
     #initial position for robot (to watch from above the object)
@@ -73,11 +73,21 @@ print(robot_move.get_current_pose().pose.position.x,
 print(robot_move.get_current_rpy())
 
 
+#TODO: add object to scene
+
+
+'''
 #perform first circular movement
 wpose = robot_move.get_current_pose().pose
 
+wpose.position.x, wpose.position.y = 0.15, 0.15
+robot_move.set_pose_target(wpose)
+robot_move.go(wait=True)
+robot_move.stop()
+
+
 #radius and num circles
-r = 0.1
+r = 0.2
 num_circles = 3
 waypoints = circular_movement(wpose, r, num_circles)
 
@@ -85,12 +95,14 @@ plan, _ = robot_move.compute_cartesian_path(
     waypoints, 0.005, 0.0  # waypoints to follow  # eef_step
 )  # jump_threshold
 
+
 robot_move.execute(plan, wait=True)
+'''
 
 '''
 #perform box movement
-lenght = 0.2
-height = 0.2
+lenght = 0.1
+height = 0.1
 waypoints = box_movement(wpose, lenght, height)
 
 plan, _ = robot_move.compute_cartesian_path(
@@ -98,9 +110,8 @@ plan, _ = robot_move.compute_cartesian_path(
 )  # jump_threshold
 
 robot_move.execute(plan, wait=True)
-'''
 
-'''
+
 #radius of bell movement
 r = 0.1
 waypoints = bell_movement(robot_move.get_current_pose().pose, r, r)
@@ -112,6 +123,17 @@ plan, _ = robot_move.compute_cartesian_path(
 robot_move.execute(plan, wait=True)
 '''
 
+#perform ambient scanning
+pose = robot_move.get_current_pose().pose
+up_down = 0.2
+forward = 0.1
+waypoints = ambient_movement(pose, forward_reach=forward, up_down_reach=up_down)
+
+plan, _ = robot_move.compute_cartesian_path(
+    waypoints, 0.002, 0.0  # waypoints to follow  # eef_step
+)  # jump_threshold
+
+robot_move.execute(plan, wait=True)
 
 print(robot_move.get_current_pose().pose.position.x, 
       robot_move.get_current_pose().pose.position.y, 
