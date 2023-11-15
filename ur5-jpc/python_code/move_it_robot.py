@@ -13,6 +13,14 @@ from trajectories.circular_move import circular_movement
 from trajectories.box_move import box_movement
 from trajectories.bell_move import bell_movement
 from trajectories.ambient_move import ambient_movement
+import gazebo_msgs.msg 
+from geometry_msgs.msg import Pose, PoseStamped
+from gazebo_msgs.srv import SpawnModel, DeleteModel
+from xml.etree import ElementTree as ET
+from std_msgs.msg import Header
+
+import save_depth
+
 
 def initial_position_move(robot_move):
     #initial position for robot (to watch from above the object)
@@ -47,8 +55,37 @@ wpose.orientation.x, wpose.orientation.y, wpose.orientation.z, wpose.orientation
 robot_move.set_pose_target(wpose)
 robot_move.go(wait=True)
 robot_move.stop()
+# Nome del modello
+model_name = "beer"
 
-'''
+# Percorso del file SDF del modello fountain
+sdf_path = "/home/filippo/.gazebo/models/beer/model.sdf"
+
+# Chiamata al servizio di Gazebo per eliminare il modello se esiste già
+rospy.wait_for_service('/gazebo/delete_model')
+try:
+    delete_model = rospy.ServiceProxy('/gazebo/delete_model', DeleteModel)
+    delete_model(model_name)
+except rospy.ServiceException as e:
+    rospy.loginfo(f"Model '{model_name}' does not exist yet or could not be deleted: {e}")
+
+# Chiamata al servizio di Gazebo per spawnare la fontana
+rospy.wait_for_service('/gazebo/spawn_sdf_model')
+try:
+    spawn_sdf = rospy.ServiceProxy('/gazebo/spawn_sdf_model', SpawnModel)
+
+    # Leggi il file SDF dopo le modifiche
+    with open(sdf_path, "r") as f:
+        sdf = f.read()
+
+    # Effettua lo spawn del modello con le dimensioni modificate
+    spawn_sdf(model_name, sdf, "/", beer_pose.pose, "world")
+
+except rospy.ServiceException as e:
+    rospy.logerr("Service call failed: %s" % e)
+
+
+
 #spawn object on scene below robot position, first create scene
 scene = moveit_commander.PlanningSceneInterface()
 
@@ -58,12 +95,12 @@ p = geometry_msgs.msg.PoseStamped()
 p.header.frame_id = robot.get_planning_frame()
 
 #where to spawn the object
-p.pose.position.x = 0.5
-p.pose.position.y = 0.1
+p.pose.position.x = 0.75
+p.pose.position.y = 0.15
 p.pose.position.z = 0.15
 #spawn and dimensions of object
-scene.add_box("example box", p, (0.2, 0.2, 0.3))
-'''
+scene.add_box("example box", p, (0.12, 0.12, 0.26))
+
 
 
 print(robot_move.get_current_pose().pose.position.x, 
@@ -73,10 +110,6 @@ print(robot_move.get_current_pose().pose.position.x,
 print(robot_move.get_current_rpy())
 
 
-#TODO: add object to scene
-
-
-'''
 #perform first circular movement
 wpose = robot_move.get_current_pose().pose
 
@@ -96,8 +129,9 @@ plan, _ = robot_move.compute_cartesian_path(
 )  # jump_threshold
 
 
-robot_move.execute(plan, wait=True)
-'''
+robot_move.execute(plan, wait=False)
+
+save_depth.main()
 
 '''
 #perform box movement
@@ -123,6 +157,7 @@ plan, _ = robot_move.compute_cartesian_path(
 robot_move.execute(plan, wait=True)
 '''
 
+'''
 #perform ambient scanning
 pose = robot_move.get_current_pose().pose
 up_down = 0.2
@@ -139,3 +174,4 @@ print(robot_move.get_current_pose().pose.position.x,
       robot_move.get_current_pose().pose.position.y, 
       robot_move.get_current_pose().pose.position.z)
     
+'''
