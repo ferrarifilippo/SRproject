@@ -4,25 +4,15 @@ import copy
 import numpy as np
 
 
-def get_quaternion_from_euler(roll, pitch, yaw):
-  """
-  Convert an Euler angle to a quaternion.
-   
-  Input
-    :param roll: The roll (rotation around x-axis) angle in radians.
-    :param pitch: The pitch (rotation around y-axis) angle in radians.
-    :param yaw: The yaw (rotation around z-axis) angle in radians.
- 
-  Output
-    :return qx, qy, qz, qw: The orientation in quaternion [x,y,z,w] format
-  """
-  qx = np.sin(roll/2)*np.cos(pitch/2)*np.cos(yaw/2) - np.cos(roll/2)*np.sin(pitch/2)*np.sin(yaw/2)
-  qy = np.cos(roll/2) * np.sin(pitch/2) * np.cos(yaw/2) + np.sin(roll/2) * np.cos(pitch/2) * np.sin(yaw/2)
-  qz = np.cos(roll/2) * np.cos(pitch/2) * np.sin(yaw/2) - np.sin(roll/2) * np.sin(pitch/2) * np.cos(yaw/2)
-  qw = np.cos(roll/2) * np.cos(pitch/2) * np.cos(yaw/2) + np.sin(roll/2) * np.sin(pitch/2) * np.sin(yaw/2)
- 
-  return qx, qy, qz, qw
 
+def get_quaternion_from_euler(roll, pitch, yaw):
+    #Convert an Euler angle to a quaternion.
+    qx = np.sin(roll/2)*np.cos(pitch/2)*np.cos(yaw/2) - np.cos(roll/2)*np.sin(pitch/2)*np.sin(yaw/2)
+    qy = np.cos(roll/2) * np.sin(pitch/2) * np.cos(yaw/2) + np.sin(roll/2) * np.cos(pitch/2) * np.sin(yaw/2)
+    qz = np.cos(roll/2) * np.cos(pitch/2) * np.sin(yaw/2) - np.sin(roll/2) * np.sin(pitch/2) * np.cos(yaw/2)
+    qw = np.cos(roll/2) * np.cos(pitch/2) * np.cos(yaw/2) + np.sin(roll/2) * np.sin(pitch/2) * np.sin(yaw/2)
+  
+    return qx, qy, qz, qw
 
 
 #get current orientation to point in the direction (to check if it works)
@@ -38,8 +28,7 @@ def get_yaw(pin_point, robot_pose):
 def ambient_movement(initial_pose, forward_reach, up_down_reach):
     #create list of waypoints, and return them
     waypoints = []
-    steps = [0, 45, 90, 135, 180, 225, 270, 315, 360]
-    
+    steps = [360, 315, 260, 225, 260, 315, 360, 45, 90, 135, 180]
     #center is robot
     cx = 0
     cy = 0
@@ -47,7 +36,7 @@ def ambient_movement(initial_pose, forward_reach, up_down_reach):
 
     pose = initial_pose
     for theta in steps:
-        pin_point = (np.cos(theta*math.pi/180), np.sin(theta*math.pi/180))
+        pin_point = (10*np.cos(theta*math.pi/180 + 0.001), 10*np.sin(theta*math.pi/180 + 0.001))
         pose.position.y = cy + radius*np.sin(theta*math.pi/180)
         pose.position.x = cx + radius*np.cos(theta*math.pi/180)
         roll, pitch, yaw = 0.0,0.0, get_yaw(pin_point, pose)
@@ -64,12 +53,5 @@ def ambient_movement(initial_pose, forward_reach, up_down_reach):
         pose.position.x -= forward_reach * np.cos(theta*math.pi/180)
         pose.position.y -= forward_reach * np.sin(theta*math.pi/180)
         waypoints.append(copy.deepcopy(pose))
-
-
-    #roll, pitch, yaw = 0.0,0.0, get_yaw(pin_point, initial_pose)
-    #initial_pose.orientation.x, initial_pose.orientation.y, initial_pose.orientation.z, initial_pose.orientation.w = get_quaternion_from_euler(roll, pitch, yaw)
-    #starting positions
-    #cx = initial_pose.position.x - radius
-    #cy = initial_pose.position.y
 
     return waypoints
