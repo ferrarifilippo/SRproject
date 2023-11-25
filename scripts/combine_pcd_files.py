@@ -25,7 +25,7 @@ def main():
     voxel_size = 0.005
 
     #data_path = '/Users/filippoferrari/Desktop/SRproject/catkin_ws/src/ur5-joint-position-control/results/beer'
-    data_path = '/Users/filippoferrari/Desktop/SRproject/dataset/'
+    data_path = '/home/filippo/catkin_ws/src/ur5-jpc/results/cube'
 
     pcd_files = []
     # Load point clouds
@@ -67,15 +67,15 @@ def main():
         pcd2.transform(trans12.transformation)
         pcd1 = pcd1 + pcd2
 
-    # print("numero punti in pcd:", len(pcd1.points))
-    #
-    # plane_model, inliers = pcd1.segment_plane(distance_threshold=0.01, ransac_n=3, num_iterations=1000)
-    # pcd_without_plane = pcd1.select_by_index(inliers, invert=True)
-    # o3d.visualization.draw_geometries([pcd_without_plane])
-    # print("numero punti senza piano:", len(pcd_without_plane.points))
+    print("numero punti in pcd:", len(pcd1.points))
+    
+    plane_model, inliers = pcd1.segment_plane(distance_threshold=0.01, ransac_n=3, num_iterations=1000)
+    pcd_without_plane = pcd1.select_by_index(inliers, invert=True)
+    o3d.visualization.draw_geometries([pcd_without_plane])
+    print("numero punti senza piano:", len(pcd_without_plane.points))
 
     # Visualize the merged point cloud
-    o3d.visualization.draw_geometries([pcd1])
+    #o3d.visualization.draw_geometries([pcd1])
 
 if __name__ == "__main__":
     main()
