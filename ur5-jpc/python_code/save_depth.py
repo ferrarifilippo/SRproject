@@ -29,6 +29,8 @@ convert_rgbFloat_to_tuple = lambda rgb_float: convert_rgbUint32_to_tuple(
     int(cast(pointer(c_float(rgb_float)), POINTER(c_uint32)).contents.value)
 )
 
+count=0
+sub=None
 
 def convertCloudFromRosToOpen3d(ros_cloud):
     
@@ -76,33 +78,59 @@ def preprocess_point_cloud(pcd, voxel_size):
     return pcd
 
 def multiway_registration(source, target, trans_init):
-    distance_threshold = 0.02
+    distance_threshold = 0.05
     result = o3d.pipelines.registration.registration_icp(
         source, target, distance_threshold, trans_init,
         o3d.pipelines.registration.TransformationEstimationPointToPoint(),
-        o3d.pipelines.registration.ICPConvergenceCriteria(max_iteration=200))
-    return result    
+        o3d.pipelines.registration.ICPConvergenceCriteria(max_iteration=500))
+    return result  
 
-def read_image(message):
-    global count
+def save_image(message, i):
+    count = i
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    voxel_size = 0.05
+    voxel_size = 0.005
 
     data_path = '/../results/beer'
 
     pcd_files = []
+
+    print('Numero: ')
+    print(count)
+
+    points = convertCloudFromRosToOpen3d(message)
+    output_filename = os.path.abspath(dir_path + data_path) + f"/conversion_result_{count}_1.pcd"
+
+    print(output_filename, points)
+
+    o3d.io.write_point_cloud(output_filename, points)
+
+    sub.unregister()
     
-    if(count<1):
+    return True
+
+
+def read_image(message):
+    global count
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    voxel_size = 0.005
+
+    data_path = '/../results/beer'
+
+    pcd_files = []
+
+    #count=5
+    
+    if(count<3):
         points = convertCloudFromRosToOpen3d(message)
-        output_filename = os.path.abspath(dir_path + data_path) + f"/conversion_result_{count}_4.pcd"
+        output_filename = os.path.abspath(dir_path + data_path) + f"/conversion_result_{count}_1.pcd"
 
         print(output_filename, points)
 
         o3d.io.write_point_cloud(output_filename, points)
 
-        time.sleep(2)
+        time.sleep(0.5)
         count+=1
-    elif(count==1):
+    elif(count==3):
         # Load point clouds
         for root, dirs, files in os.walk(os.path.abspath(dir_path + data_path)):
             for file in files:
@@ -113,24 +141,58 @@ def read_image(message):
         pcd1 = preprocess_point_cloud(pcd1, voxel_size)
         pcd_files.pop()
 
+        print("numero punti in pcd:", len(pcd1.points))
+        
+        # plane_model, inliers = pcd1.segment_plane(distance_threshold=0.01, ransac_n=3, num_iterations=1000)
+        # pcd_without_plane = pcd1.select_by_index(inliers, invert=True)
+        # #o3d.visualization.draw_geometries([pcd_without_plane])
+        # print("numero punti senza piano:", len(pcd_without_plane.points))
+        
+        # pcd1 = pcd_without_plane
+
         for pcd_file in pcd_files:
             pcd2 = o3d.io.read_point_cloud(pcd_file)
+            pcd2 = preprocess_point_cloud(pcd2, voxel_size)
+
+            # print("numero punti in pcd:", len(pcd2.points))
+            
+            # plane_model, inliers = pcd2.segment_plane(distance_threshold=0.01, ransac_n=3, num_iterations=1000)
+            # pcd_without_plane = pcd2.select_by_index(inliers, invert=True)
+            # # o3d.visualization.draw_geometries([pcd_without_plane])
+            # print("numero punti senza piano:", len(pcd_without_plane.points))
+            
+            # pcd2 = pcd_without_plane
             # Perform multiway registration
             trans12 = multiway_registration(pcd2, pcd1, np.identity(4))
             pcd2.transform(trans12.transformation)
             pcd1 = pcd1 + pcd2
         
-        print("numero punti in pcd:", len(pcd1.points))
+        # print("numero punti in pcd:", len(pcd1.points))
 
-        plane_model, inliers = pcd1.segment_plane(distance_threshold=0.01, ransac_n=3, num_iterations = 1000)
-        pcd_without_plane = pcd1.select_by_index(inliers, invert=True)
-        o3d.visualization.draw_geometries([pcd_without_plane])
-        print("numero punti senza piano:", len(pcd_without_plane.points))
+        # plane_model, inliers = pcd1.segment_plane(distance_threshold=0.01, ransac_n=3, num_iterations = 1000)
+        # pcd_without_plane = pcd1.select_by_index(inliers, invert=True)
+        # o3d.visualization.draw_geometries([pcd_without_plane])
+        # print("numero punti senza piano:", len(pcd_without_plane.points))
+        o3d.visualization.draw_geometries([pcd1])
         count+=1
 
-count = 0
-rospy.init_node("read_image")
-sub = rospy.Subscriber('/camera/depth/points', PointCloud2, read_image)
-rospy.spin()
 
+def main(save=True, i=0):
+    count = i
 
+    global sub
+    #rospy.init_node("read_image")
+    if save:
+        print(i)
+        try:
+            sub = rospy.Subscriber('/camera/depth/points', PointCloud2, save_image, i)
+        except Exception:
+            print(Exception)    
+    else:    
+        sub = rospy.Subscriber('/camera/depth/points', PointCloud2, read_image)
+
+    #rospy.spin()   
+    #rospy.spin()
+
+if __name__=="__main__":
+    main()

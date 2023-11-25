@@ -15,7 +15,17 @@ from trajectories.circular_move import circular_movement
 from trajectories.box_move import box_movement
 from trajectories.bell_move import bell_movement
 from trajectories.ambient_move import ambient_movement
-from trajectories.rotate_move import rotation_movement
+#from trajectories.rotate_move import rotation_movement
+
+import gazebo_msgs.msg 
+from geometry_msgs.msg import Pose, PoseStamped
+from gazebo_msgs.srv import SpawnModel, DeleteModel
+from xml.etree import ElementTree as ET
+from std_msgs.msg import Header
+from sensor_msgs.msg import PointCloud2
+
+import save_depth
+from save_depth import read_image
 
 
 
@@ -60,8 +70,12 @@ def set_pose(robot_move, x,y,z, ox, oy, oz, ow):
     robot_move.stop()
 
 
-def get_depth_image():
-    pass
+def get_depth_image(i):
+    print(i)
+    try:
+        save_depth.main(True, i)
+    except Exception:
+        print(Exception)
 
 
 #initialize robot connection to moveit
@@ -78,8 +92,59 @@ robot_move = moveit_commander.MoveGroupCommander(group_name)
 initial_position_move(robot_move)
 
 #TODO: spawn object in Rviz and Gazebo, set its central point (where its vetical axis is)
-pin_point = (0.5, 0.0)
 
+# Dati per la posizione e orientamento della birra
+beer_pose = PoseStamped()
+beer_pose.pose.position.x = 0.5
+beer_pose.pose.position.y = 0.0
+beer_pose.pose.position.z = 0.2
+
+# Nome del modello
+model_name = "beer"
+
+# Percorso del file SDF del modello fountain
+sdf_path = "/home/filippo/.gazebo/models/beer/model.sdf"
+
+# Chiamata al servizio di Gazebo per eliminare il modello se esiste già
+rospy.wait_for_service('/gazebo/delete_model')
+try:
+    delete_model = rospy.ServiceProxy('/gazebo/delete_model', DeleteModel)
+    delete_model(model_name)
+except rospy.ServiceException as e:
+    rospy.loginfo(f"Model '{model_name}' does not exist yet or could not be deleted: {e}")
+
+# Chiamata al servizio di Gazebo per spawnare la fontana
+rospy.wait_for_service('/gazebo/spawn_sdf_model')
+try:
+    spawn_sdf = rospy.ServiceProxy('/gazebo/spawn_sdf_model', SpawnModel)
+
+    # Leggi il file SDF dopo le modifiche
+    with open(sdf_path, "r") as f:
+        sdf = f.read()
+
+    # Effettua lo spawn del modello con le dimensioni modificate
+    spawn_sdf(model_name, sdf, "/", beer_pose.pose, "world")
+
+except rospy.ServiceException as e:
+    rospy.logerr("Service call failed: %s" % e)
+
+#spawn object on scene below robot position, first create scene
+scene = moveit_commander.PlanningSceneInterface()
+
+rospy.sleep(2)
+
+p = geometry_msgs.msg.PoseStamped()
+p.header.frame_id = robot.get_planning_frame()
+
+#where to spawn the object
+p.pose.position.x = 0.5
+p.pose.position.y = 0.0
+p.pose.position.z = 0.2
+#spawn and dimensions of object
+scene.add_box("example box", p, (0.12, 0.12, 0.26))
+
+
+pin_point = (0.5, 0.0)
 
 
 #movement to check three points: forward, left and right of object
@@ -87,8 +152,8 @@ pin_point = (0.5, 0.0)
 set_pose(robot_move, 0.30,0.0,0.20, 0.0,0.0,0.0,1.0)
 
 #get picture of object
-get_depth_image()
-
+get_depth_image(0)
+rospy.sleep(10)
 
 #second position
 set_pose(robot_move, 0.50, 0.40, 0.20, 0.0,0.0,0.0,1.0)
@@ -105,7 +170,8 @@ robot_move.stop()
 
 
 #take the picture
-get_depth_image()
+get_depth_image(1)
+rospy.sleep(10)
 
 #reset the robot to initial position
 initial_position_move(robot_move)
@@ -125,4 +191,6 @@ robot_move.go(joints, wait=True)
 robot_move.stop()
 
 #get third picture
-get_depth_image()
+get_depth_image(2)
+rospy.sleep(10)
+print('END')

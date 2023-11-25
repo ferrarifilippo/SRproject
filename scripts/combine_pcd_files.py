@@ -25,7 +25,7 @@ def main():
     voxel_size = 0.005
 
     #data_path = '/Users/filippoferrari/Desktop/SRproject/catkin_ws/src/ur5-joint-position-control/results/beer'
-    data_path = '/home/filippo/catkin_ws/src/ur5-jpc/results/cube'
+    data_path = '/home/filippo/PROJECT/src/ur5-jpc/results/beer'
 
     pcd_files = []
     # Load point clouds
