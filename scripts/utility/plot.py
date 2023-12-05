@@ -19,7 +19,6 @@ def draw_feature(source, feature):
     feature_temp.paint_uniform_color([1, 0.706, 0])
     o3d.visualization.draw_geometries([source_temp, feature_temp])
 
-# 2개의 좌우 이미지에서 검출된 특징점들을 선들로 이어주어 시각화 하는 함수입니다
 def drawlines(img1, img2, lines, pts1, pts2):
     '''
     img1 - image on which we draw the epilines for the points in

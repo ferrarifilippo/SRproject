@@ -13,7 +13,7 @@ import os
 
 def load_point_clouds(voxel_size=0.0):
 
-    data_path = '/Users/filippoferrari/Desktop/SRproject/beer_new'
+    data_path = '/Users/filippoferrari/Desktop/SRproject/drone'
 
     pcd_files = []
     # Load point clouds

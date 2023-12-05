@@ -1,25 +1,22 @@
 import numpy as np
 import open3d as o3d
-from SIFT import SIFT_Transformation # SIFT feature points based registration
-#from ORB import ORB_Transformation # ORB feature points based registration
-from LoFTR import LoFTR_Transformation # LoFTR method based registration
+from transformations.SIFT import SIFT_Transformation # SIFT feature points based registration
+from transformations.ORB import ORB_Transformation # ORB feature points based registration
+from transformations.LoFTR import LoFTR_Transformation # LoFTR method based registration
 import matplotlib.pyplot as plt
 
 # Load point clouds
 def load_point_clouds(voxel_size=0.0, pcds_paths=None):
     pcds = []
-    print('len demo_icp_pcds_paths:', len(pcds_paths))
-    # demo_icp_pcds = o3d.data.DemoICPPointClouds()
     for path in pcds_paths:
         pcd = o3d.io.read_point_cloud(path)
         pcd_down = pcd.voxel_down_sample(voxel_size=voxel_size)
         pcds.append(pcd_down)
     return pcds
 
+# Load point clouds without down sample
 def load_orginal_point_clouds(voxel_size=0.0, pcds_paths=None):
     pcds = []
-    print('len demo_icp_pcds_paths:', len(pcds_paths))
-    # demo_icp_pcds = o3d.data.DemoICPPointClouds()
     for path in pcds_paths:
         pcd = o3d.io.read_point_cloud(path)
         pcds.append(pcd)
@@ -162,35 +159,15 @@ def full_registration(pcds, max_correspondence_distance_coarse, max_corresponden
 
 if __name__ == "__main__":
 
-    object = "beer" # "castard" or "spyderman"
+    object = "beer"
 
     # Path
-    if object == "castard":
-        depth_path = ['./train/castard/depth/align_test_depth%d.png' % i for i in range(1, 6)]
-        rgb_path = ['./train/castard/rgb/align_test%d.png' % i for i in range(1, 6)]
-        pcds_paths = ['./pcd_o3d/castard/box1.pcd', './pcd_o3d/castard/box2.pcd', './pcd_o3d/castard/box3.pcd',
-                      './pcd_o3d/castard/box4.pcd', './pcd_o3d/castard/box5.pcd', './pcd_o3d/castard/box6.pcd',
-                      './pcd_o3d/castard/box7.pcd', './pcd_o3d/castard/box8.pcd', './pcd_o3d/castard/box9.pcd',
-                      './pcd_o3d/castard/box10.pcd', './pcd_o3d/castard/box11.pcd', './pcd_o3d/castard/box12.pcd',
-                      './pcd_o3d/castard/box13.pcd', './pcd_o3d/castard/box14.pcd', './pcd_o3d/castard/box15.pcd',
-                      './pcd_o3d/castard/box16.pcd', './pcd_o3d/castard/box17.pcd', './pcd_o3d/castard/box18.pcd',
-                      './pcd_o3d/castard/box19.pcd', './pcd_o3d/castard/box20.pcd']
-    elif object == "spyderman":
-        depth_path = ['./train/spyderman/depth/align_test_depth%d.png' % i for i in range(1, 17)]
-        rgb_path = ['./train/spyderman/rgb/align_test%d.png' % i for i in range(1, 17)]
-        pcds_paths = ['./pcd_o3d/spyderman/spyderman1.pcd', './pcd_o3d/spyderman/spyderman2.pcd',
-                      './pcd_o3d/spyderman/spyderman3.pcd', './pcd_o3d/spyderman/spyderman4.pcd',
-                      './pcd_o3d/spyderman/spyderman5.pcd', './pcd_o3d/spyderman/spyderman6.pcd',
-                      './pcd_o3d/spyderman/spyderman7.pcd', './pcd_o3d/spyderman/spyderman8.pcd',
-                      './pcd_o3d/spyderman/spyderman9.pcd', './pcd_o3d/spyderman/spyderman10.pcd',
-                      './pcd_o3d/spyderman/spyderman11.pcd', './pcd_o3d/spyderman/spyderman12.pcd',
-                      './pcd_o3d/spyderman/spyderman13.pcd', './pcd_o3d/spyderman/spyderman14.pcd',
-                      './pcd_o3d/spyderman/spyderman15.pcd', './pcd_o3d/spyderman/spyderman16.pcd'
-                      ]
-    elif object == "beer":
+    if object == "beer":
         depth_path = ['/Users/filippoferrari/Desktop/SRproject/beer_new/depth/depth_image%d.png' % i for i in range(4)]
         rgb_path = ['/Users/filippoferrari/Desktop/SRproject/beer_new/image/rgb_image%d.jpg' % i for i in range(4)]
         pcds_paths = ['/Users/filippoferrari/Desktop/SRproject/beer_new/conversion_result_%d.pcd' % i for i in range(4)]
+    elif object == "drone":
+        pcds_paths = ['/Users/filippoferrari/Desktop/SRproject/drone/conversion_result_%d.pcd' % i for i in range(4)]
 
     # Define voxel size to Downsample
     voxel_size = 0.001

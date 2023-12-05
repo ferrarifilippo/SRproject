@@ -27,14 +27,14 @@ def save_rgbd_image(rgbd_image, output_path):
 
 def main():
     # Specifica i percorsi delle immagini RGB e di profondità
-    rgb_path = "/home/filippo/PROJECT/src/ur5-jpc/results/rgb_image.png"
-    depth_path = "/home/filippo/PROJECT/src/ur5-jpc/results/depth_image.png"
+    rgb_path = ""
+    depth_path = ""
 
     # Crea l'immagine RGBD
     rgbd_image = create_rgbd_image(rgb_path, depth_path)
 
     # Salva l'immagine RGBD
-    output_path = "/home/filippo/PROJECT/src/ur5-jpc/dataset/image.png"
+    output_path = ""
     save_rgbd_image(rgbd_image, output_path)
 
 

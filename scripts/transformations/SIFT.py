@@ -4,7 +4,7 @@ import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 from registration import match_ransac
-from utils import get_boundary
+from utility.utils import get_boundary
 ########################################################################################################################
 # Intrinsic parameter
 ########################################################################################################################
@@ -43,8 +43,8 @@ def SIFT_Transformation(img1, img2, depth_img1, depth_img2, source_pcd, target_p
     #img_center_y = 239.870
     img_center_y = 0
 
-    # sift = cv2.xfeatures2d.SIFT_create() # OpenCV 4.5 미만 버젼 사용중일 시
-    sift = cv2.SIFT_create() # OpenCV 4.5 이상의 버전 사용중일 시
+    # sift = cv2.xfeatures2d.SIFT_create() 
+    sift = cv2.SIFT_create() 
 
     # Find keypoints and descriptors using SIFT
     kp1, des1 = sift.detectAndCompute(imgL, None)

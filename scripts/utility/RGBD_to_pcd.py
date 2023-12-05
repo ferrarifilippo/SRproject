@@ -12,9 +12,9 @@ depth_scaling_factor = 1000
 img_center_x = cx
 img_center_y = cy
 
-img = cv2.imread('/Users/filippoferrari/Desktop/SRproject/dataset/beer_depth/image/00003.jpg')
+img = cv2.imread('')
 img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-depth = o3d.io.read_image('/Users/filippoferrari/Desktop/SRproject/dataset/beer_depth/depth/00003.png')
+depth = o3d.io.read_image('')
 depth = np.asarray(depth, np.float32)
 threshold = 3000  # 1m limit
 idx = np.where(depth > threshold)
@@ -43,5 +43,5 @@ original_pcd.points = o3d.utility.Vector3dVector(original_pcd_pos)
 original_pcd.colors = o3d.utility.Vector3dVector(original_pcd_color)
 
 # Save point cloud
-o3d.io.write_point_cloud('/Users/filippoferrari/Desktop/SRproject/dataset/beer_depth/1.pcd', original_pcd)
+o3d.io.write_point_cloud('', original_pcd)
 o3d.visualization.draw_geometries([original_pcd])

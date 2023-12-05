@@ -4,7 +4,7 @@ import numpy as np
 
 def main():
 
-    pcd = o3d.io.read_point_cloud("/Users/filippoferrari/open3d_data/extract/LoungeRGBDImages/lounge.ply")
+    pcd = o3d.io.read_point_cloud("../open3d_data/extract/LoungeRGBDImages/lounge.ply")
 
     o3d.visualization.draw_geometries([pcd])
 

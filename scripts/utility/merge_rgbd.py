@@ -10,11 +10,11 @@ def create_rgbd_image(rgb_file, depth_file):
 
 def main():
     # Sostituisci con i percorsi dei tuoi file RGB e Depth
-    rgb_file1 = "/home/filippo/PROJECT/src/ur5-jpc/results/rgb_image.png"
-    depth_file1 = "/home/filippo/PROJECT/src/ur5-jpc/results/depth_image.png"
+    rgb_file1 = ""
+    depth_file1 = ""
     
-    rgb_file2 = "/home/filippo/PROJECT/src/ur5-jpc/results/rgb_image2.png"
-    depth_file2 = "/home/filippo/PROJECT/src/ur5-jpc/results/depth_image2.png"
+    rgb_file2 = ""
+    depth_file2 = ""
 
     # Crea le immagini RGBD da entrambe le coppie di file RGB e Depth
     rgbd_image1 = create_rgbd_image(rgb_file1, depth_file1)

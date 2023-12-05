@@ -1,6 +1,6 @@
 import numpy as np
 import open3d as o3d
-from SIFT import SIFT_Transformation
+from transformations.SIFT import SIFT_Transformation
 from registration import draw_registration_result
 from glob import glob
 import matplotlib.pyplot as plt
@@ -99,29 +99,15 @@ def full_registration(pcds, max_correspondence_distance_coarse, max_corresponden
 
 if __name__ == "__main__":
 
-    object = "beer"
+    object = "drone"
 
-    if object == "castard":
-        depth_path = ['./train/castard/depth/align_test_depth%d.png' % i for i in range(1, 21)]
-        rgb_path = ['./train/castard/rgb/align_test%d.png' % i for i in range(1, 21)]
-        pcds_paths = ['./pcd_o3d/castard/box%d.pcd' % i for i in range(1, 19)]
-    elif object == "new_box":
-        depth_path = ['./train/new_box2/depth/align_test_depth%d.png' % i for i in range(1, 19)]
-        rgb_path = ['./train/new_box2/rgb/align_test%d.png' % i for i in range(1, 19)]
-        pcds_paths = ['./pcd_o3d/new_box2/box1%d.pcd' % i for i in range(1, 19)]
-    elif object == "spyderman":
-        depth_path = ['./train/spyderman/depth/align_test_depth%d.png' % i for i in range(1, 17)]
-        rgb_path = ['./train/spyderman/rgb/align_test%d.png' % i for i in range(1, 17)]
-        pcds_paths = ['./pcd_o3d/spyderman/spyderman%d.pcd' % i for i in range(1, 17)]
-    elif object == "spyderman2":
-        depth_path = ['./train/spyderman/depth/align_test_depth%d.png' % i for i in range(1, 23)]
-        rgb_path = ['./train/spyderman/rgb/align_test%d.png' % i for i in range(1, 23)]
-        pcds_paths = ['./pcd_o3d/spyderman2/spyderman2%d.pcd' % i for i in range(1, 23)]
-    elif object == "beer":
+    if object == "beer":
         #depth_path = ['/Users/filippoferrari/Desktop/SRproject/dataset/beer3/depth/%d.png' % i for i in range(12)]
         #rgb_path = ['/Users/filippoferrari/Desktop/SRproject/dataset/beer3/image/%d.jpg' % i for i in range(12)]
         pcds_paths = ['/Users/filippoferrari/Desktop/SRproject/beer/conversion_result_%d.pcd' % i for i in range(4)]
         #pcds_paths = ['/Users/filippoferrari/Desktop/SRproject/dataset/beer/conversion_result_0.pcd', '/Users/filippoferrari/Desktop/SRproject/dataset/beer/conversion_result_2.pcd']
+    elif object == "drone":
+        pcds_paths = ['/Users/filippoferrari/Desktop/SRproject/drone/conversion_result_%d.pcd' % i for i in range(4)]
 
     # pcds_paths.reverse()
     # Define voxel size to Downsample

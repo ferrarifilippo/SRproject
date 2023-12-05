@@ -19,8 +19,8 @@ def draw_registration_result(source, target, transformation):
 
 print("Load two point clouds and show initial pose ...")
 #ply_data = o3d.data.DemoColoredICPPointClouds()
-source = o3d.io.read_point_cloud('/Users/filippoferrari/Desktop/SRproject/beer/conversion_result_0.pcd')
-target = o3d.io.read_point_cloud('/Users/filippoferrari/Desktop/SRproject/beer/conversion_result_1.pcd')
+source = o3d.io.read_point_cloud('/Users/filippoferrari/Desktop/SRproject/beer_new/conversion_result_0.pcd') #pcd path
+target = o3d.io.read_point_cloud('/Users/filippoferrari/Desktop/SRproject/beer_new/conversion_result_1.pcd') #pcd path
 
 if __name__ == "__main__":
     # Draw initial alignment.
@@ -59,5 +59,7 @@ if __name__ == "__main__":
                 relative_fitness=1e-6, relative_rmse=1e-6, max_iteration=iter))
         current_transformation = result_icp.transformation
         print(result_icp, "\n")
-    # draw_registration_result(source, target, result_icp.transformation)
+
+
+    draw_registration_result(source, target, result_icp.transformation)
     print(current_transformation)

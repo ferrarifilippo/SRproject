@@ -7,7 +7,7 @@ import cv2
 import open3d as o3d
 from kornia_moons.feature import draw_LAF_matches
 from registration import match_ransac
-from utils import get_boundary
+from utility.utils import get_boundary
 
 # Intel RealSense D415
 depth_scaling_factor = 999.99

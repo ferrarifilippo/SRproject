@@ -4,7 +4,7 @@ import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 from registration import match_ransac
-from utils import get_boundary
+from utility.utils import get_boundary
 
 ########################################################################################################################
 # Intrinsic parameter of Intel RealSense D415

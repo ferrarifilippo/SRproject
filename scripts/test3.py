@@ -25,14 +25,10 @@ def main():
     dir_path = os.path.dirname(os.path.realpath(__file__))
 
     # Paths to your RGB and depth images
-    #rgb_path = dir_path + '/redwood-3dscan-master/data/rgbd/00001/rgb/0000001-000000000000.jpg'
-    #depth_path = dir_path + '/redwood-3dscan-master/data/rgbd/00001/depth/0000001-000000000000.png'
-
     rgb_path = dir_path + '/redwood-3dscan-master/data/rgbd/00001/rgb/0000002-000000033516.jpg'
     depth_path = dir_path + '/redwood-3dscan-master/data/rgbd/00001/depth/0000002-000000033369.png'
-
-    #dir_path + data_path + '/rgb/0000002-000000033516.jpg']
     #depth_files = [dir_path + data_path + '/depth/0000001-000000000000.png', dir_path + data_path + '/depth/0000002-000000033369.png']
+    
     print(rgb_path)
     print(depth_path)
     # Replace these paths with your camera intrinsic and extrinsic files

@@ -15,7 +15,8 @@ if __name__ == '__main__':
     depth = o3d.t.io.read_image(tum_data.depth_path).to(device)
     color = o3d.t.io.read_image(tum_data.color_path).to(device)
 
-    intrinsic = o3d.core.Tensor([[535.4, 0, 320.1], [0, 539.2, 247.6],
+    intrinsic = o3d.core.Tensor([[535.4, 0, 320.1], 
+                                 [0, 539.2, 247.6],
                                  [0, 0, 1]])
     rgbd = o3d.t.geometry.RGBDImage(color, depth)
 

@@ -70,5 +70,5 @@ def register_all_pcd_files(folder_path, voxel_size=0.05, distance_multiplier=1.5
     o3d.io.write_point_cloud("risultato_registrazione_globale.pcd", reference_pcd)
 
 if __name__ == '__main__':
-    folder_path = '/Users/filippoferrari/Desktop/SRproject/dataset/beer/'
+    folder_path = '/Users/filippoferrari/Desktop/SRproject/dataset/glass/'
     register_all_pcd_files(folder_path)

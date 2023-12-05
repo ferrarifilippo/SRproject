@@ -8,7 +8,7 @@ from open3d import *
 import numpy as np
 import cv2
 import open3d as o3d
-from plot import draw_registration_result
+from utility.plot import draw_registration_result
 
 def icp(source,target,voxel_size,max_correspondence_distance_coarse,max_correspondence_distance_fine,
         method = "colored-icp"):
@@ -233,7 +233,7 @@ def rigid_transform_3D(A, B):
     assert len(A) == len(B)
     A=  np.asmatrix(A)
     B=  np.asmatrix(B)
-    N = A.shape[0];
+    N = A.shape[0]
 
     centroid_A = np.mean(A, axis=0)
     centroid_B = np.mean(B, axis=0)
@@ -256,18 +256,23 @@ def rigid_transform_3D(A, B):
 if __name__ == '__main__':
 
     # Set image path
-    img1_path = 'train/align_test7.png'
-    depth_img1_path = 'train/align_test_depth7.png'
-    img2_path = 'train/align_test11.png'
-    depth_img2_path = 'train/align_test_depth11.png'
+    img1_path = '/Users/filippoferrari/Desktop/SRproject/beer_new/image/rgb_image0.jpg'
+    depth_img1_path = '/Users/filippoferrari/Desktop/SRproject/beer_new/depth/depth_image0.png'
+    img2_path = '/Users/filippoferrari/Desktop/SRproject/beer_new/image/rgb_image1.jpg'
+    depth_img2_path = '/Users/filippoferrari/Desktop/SRproject/beer_new/depth/depth_image1.png'
 
     img1 = np.asarray(cv2.imread(img1_path), dtype=np.uint8)
     img2 = np.asarray(cv2.imread(img2_path), dtype=np.uint8)
     depth_img1 = np.asarray(cv2.imread(depth_img1_path), dtype=np.float64)
     depth_img2 = np.asarray(cv2.imread(depth_img2_path), dtype=np.float64)
 
-    pcd1 = o3d.io.read_point_cloud('castard_7.pcd')
-    pcd2 = o3d.io.read_point_cloud('castard_11.pcd')
+    pcd1 = o3d.io.read_point_cloud('/Users/filippoferrari/Desktop/SRproject/beer_new/conversion_result_0.pcd')
+    pcd2 = o3d.io.read_point_cloud('/Users/filippoferrari/Desktop/SRproject/beer_new/conversion_result_1.pcd')
+
+    print(img1)
+    print(img2)
+    print(depth_img1)
+    print(depth_img2)
 
     transform = feature_registration(img1, depth_img1, img2, depth_img2)
     print(transform)
