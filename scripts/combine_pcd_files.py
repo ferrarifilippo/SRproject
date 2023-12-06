@@ -24,8 +24,15 @@ def main():
     dir_path = os.path.dirname(os.path.realpath(__file__))
     voxel_size = 0.005
 
-    #data_path = '/Users/filippoferrari/Desktop/SRproject/catkin_ws/src/ur5-joint-position-control/results/beer'
-    data_path = '/home/filippo/PROJECT/src/ur5-jpc/results/beer'
+    data_path = '/Users/filippoferrari/Desktop/SRproject/dataset/beer'
+    #data_path = '/home/filippo/PROJECT/src/ur5-jpc/results/beer'
+
+    # Matrice intrinseca (projection matrix)
+    intrinsic_matrix = np.array([[449.640411, 0.000000, 239.564668, 0.000000],
+                                [0.000000, 449.876526, 178.818522, 0.000000],
+                                [0.000000, 0.000000, 1.000000, 0.000000],
+                                [0.000000, 0.000000, 0.000000, 1.000000]])
+
 
     pcd_files = []
     # Load point clouds
@@ -63,7 +70,7 @@ def main():
         # pcd2 = pcd_without_plane
 
         # Perform multiway registration
-        trans12 = multiway_registration(pcd2, pcd1, np.identity(4))
+        trans12 = multiway_registration(pcd2, pcd1, intrinsic_matrix)
         pcd2.transform(trans12.transformation)
         pcd1 = pcd1 + pcd2
 
