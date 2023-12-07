@@ -107,7 +107,7 @@ if __name__ == "__main__":
         pcds_paths = ['/Users/filippoferrari/Desktop/SRproject/beer/conversion_result_%d.pcd' % i for i in range(4)]
         #pcds_paths = ['/Users/filippoferrari/Desktop/SRproject/dataset/beer/conversion_result_0.pcd', '/Users/filippoferrari/Desktop/SRproject/dataset/beer/conversion_result_2.pcd']
     elif object == "drone":
-        pcds_paths = ['/Users/filippoferrari/Desktop/SRproject/drone/conversion_result_%d.pcd' % i for i in range(4)]
+        pcds_paths = ['/Users/filippoferrari/Desktop/SRproject/drone/conversion_result_%d.pcd' % i for i in range(23)]
 
     # pcds_paths.reverse()
     # Define voxel size to Downsample
@@ -161,7 +161,11 @@ if __name__ == "__main__":
     vis.create_window('3DReconstructed')
 
     for p in pcds_down:
-        vis.add_geometry(p)
+        print("numero punti in pcd:", len(p.points))
+        plane_model, inliers = p.segment_plane(distance_threshold=0.01, ransac_n=3, num_iterations=1000)
+        pcd_without_plane = p.select_by_index(inliers, invert=True)
+        print("numero punti senza piano:", len(pcd_without_plane.points))
+        vis.add_geometry(pcd_without_plane)
 
     axis = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.1, origin=[0, 0, 0])
     vis.add_geometry(axis)
