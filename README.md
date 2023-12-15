@@ -4,6 +4,8 @@
 
 <p>This project is under construction and will be developed following the institutional obligations regarding the Smart Robotics exam of the <b>University of Modena and Reggio Emilia</b></p>
 
+![](https://github.com/ferrarifilippo/SRproject/results/drone.gif)
+
 ### Instructions
 
 As a first step, you need to configure your catkin workspace. 
