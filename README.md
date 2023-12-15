@@ -4,7 +4,7 @@
 
 <p>This project is under construction and will be developed following the institutional obligations regarding the Smart Robotics exam of the <b>University of Modena and Reggio Emilia</b></p>
 
-![](https://github.com/ferrarifilippo/SRproject/results/drone.gif](https://github.com/ferrarifilippo/SRproject/blob/main/results/drone.gif)
+![](https://github.com/ferrarifilippo/SRproject/blob/main/results/drone.gif)
 
 ### Instructions
 
