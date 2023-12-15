@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 
 def rgbd_to_pcd(count):
 
-    source_color = o3d.io.read_image('./train/spyderman2/rgb/align_test%d.png'%count)
-    source_depth = o3d.io.read_image('./train/spyderman2/depth/align_test_depth%d.png'%count)
+    source_color = o3d.io.read_image('./rgb/align_test%d.png'%count)
+    source_depth = o3d.io.read_image('./depth/align_test_depth%d.png'%count)
 
     K = np.array(
          [[597.522, 0.0, 312.885],
@@ -18,7 +18,6 @@ def rgbd_to_pcd(count):
 
     source_rgbd_image = o3d.geometry.RGBDImage.create_from_color_and_depth(source_color, source_depth, depth_scale=1000, convert_rgb_to_intensity=False, depth_trunc=1)
     pcd = o3d.geometry.PointCloud.create_from_rgbd_image(source_rgbd_image, intrinsic)
-    # o3d.io.write_point_cloud('./pcd_o3d/spyderman2/spyderman2_%d.pcd' % count, pcd)
 
     # Plane Segmentation
     plane_model, inliers = pcd.segment_plane(distance_threshold=0.02,
@@ -84,7 +83,7 @@ def rgbd_to_pcd(count):
     cl, ind = cl.remove_radius_outlier(nb_points=100, radius=0.01)
     o3d.visualization.draw_geometries([cl])
 
-    o3d.io.write_point_cloud('./pcd_o3d/spyderman2/spyderman2%d.pcd'%count, cl)
+    o3d.io.write_point_cloud('./pcd_o3d/result%d.pcd'%count, cl)
 
 if __name__ == '__main__':
     for i in range(1, 33):

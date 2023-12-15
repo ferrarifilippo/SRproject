@@ -4,7 +4,7 @@ import numpy as np
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
     
-data_path = '/../beer_new/'
+data_path = '/../dataset/ambient/'
 
 pcd_files = []
 

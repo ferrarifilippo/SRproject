@@ -6,9 +6,8 @@ import matplotlib.pyplot as plt
 from registration import match_ransac
 from utility.utils import get_boundary
 
-########################################################################################################################
-# Intrinsic parameter of Intel RealSense D415
-########################################################################################################################
+# Intrinsic parameter of Intel RealSense R200
+
 K = np.array(
     [[451.985, 0.0, 239.785],
      [0.0, 451.934, 179.271],
@@ -18,12 +17,11 @@ intrinsic = o3d.camera.PinholeCameraIntrinsic()
 intrinsic.intrinsic_matrix = K
 print(intrinsic.intrinsic_matrix)
 
-########################################################################################################################
-# Feature matching using SIFT algorithm
-# Find transformation matrix from corresponding points based on SIFT
-########################################################################################################################
+
+# Feature matching using ORB algorithm
+# Find transformation matrix from corresponding points based on ORB
+
 def ORB_Transformation(img1, img2, depth_img1, depth_img2, source_pcd, target_pcd):
-    print('TEST')
     # Read image from path
     imgL = cv2.imread(img1)
     imgR = cv2.imread(img2)
@@ -37,11 +35,11 @@ def ORB_Transformation(img1, img2, depth_img1, depth_img2, source_pcd, target_pc
     depthL[left_idx] = threshold
     depthR[right_idx] = threshold
 
-    # Intel RealSense D415
+    # Intel RealSense R200
     depth_scaling_factor = 999.99
-    focal_length = 597.522  ## mm
-    img_center_x = 312.885
-    img_center_y = 239.870
+    focal_length = 452 #mm
+    img_center_x = 0
+    img_center_y = 0
 
     # Create ORB
     orb = cv2.ORB_create()
@@ -100,7 +98,7 @@ def ORB_Transformation(img1, img2, depth_img1, depth_img2, source_pcd, target_pc
     for i in range(len(pts1)):
         matches_index = np.append(matches_index, np.array([i, i]))
     matches_index = matches_index.reshape(-1, 2)
-    correspondence_points = open3d.utility.Vector2iVector(matches_index)
+    correspondence_points = o3d.utility.Vector2iVector(matches_index)
 
     pts1_3d = []
     pts2_3d = []

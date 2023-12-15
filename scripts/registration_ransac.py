@@ -28,12 +28,12 @@ if __name__ == '__main__':
         'Global point cloud registration example with RANSAC')
     parser.add_argument('src',
                         type=str,
-                        default='/Users/filippoferrari/Desktop/SRproject/beer_new/conversion_result_0.pcd',
+                        default='',
                         nargs='?',
                         help='path to src point cloud')
     parser.add_argument('dst',
                         type=str,
-                        default='/Users/filippoferrari/Desktop/SRproject/beer_new/conversion_result_1.pcd',
+                        default='',
                         nargs='?',
                         help='path to dst point cloud')
     parser.add_argument('--voxel_size',

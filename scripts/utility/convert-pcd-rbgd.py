@@ -2,7 +2,7 @@ import open3d as o3d
 import numpy as np
 
 # Load PCD file
-pcd_path = "/Users/filippoferrari/Desktop/SRproject/dataset/beer/conversion_result_0.pcd"
+pcd_path = ""
 pcd = o3d.io.read_point_cloud(pcd_path)
 
 # Create a dummy RGB image and depth image for illustration purposes

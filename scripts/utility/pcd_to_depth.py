@@ -1,11 +1,11 @@
 import open3d as o3d
 
 # Project into images
-depth_list = ['/Users/filippoferrari/Desktop/SRproject/beer/depth/%d.png' % i for i in range(4)]
-jpg_list = ['/Users/filippoferrari/Desktop/SRproject/beer/image/%d.jpg' % i for i in range(4)]
-pcd_list = ['/Users/filippoferrari/Desktop/SRproject/beer/conversion_result_%d.pcd' % i for i in range(4)]
+depth_list = ['/Users/filippoferrari/Desktop/SRproject/beer/depth/%d.png' % i for i in range(24)]
+jpg_list = ['/Users/filippoferrari/Desktop/SRproject/beer/image/%d.jpg' % i for i in range(24)]
+pcd_list = ['/Users/filippoferrari/Desktop/SRproject/beer/conversion_result_%d.pcd' % i for i in range(24)]
 
-for i in range(4):
+for i in range(24):
    print(i)
    pcd_temp = o3d.io.read_point_cloud(pcd_list[i], format="pcd")
    pcd_temp.transform([[1.0, 0.0, 0.0, 0.0], [0.0, -1.0, 0.0, 0.0], [0.0, 0.0, -1.0, 0.0], [0.0, 0.0, 0.0, 1.0]])

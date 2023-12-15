@@ -1,9 +1,9 @@
 ## License: Apache 2.0. See LICENSE file in root directory.
 ## Copyright(c) 2017 Intel Corporation. All Rights Reserved.
 
-#####################################################
-##              Align Depth to Color               ##
-#####################################################
+
+#              Align Depth to Color
+
 
 # First import the library
 import pyrealsense2 as rs

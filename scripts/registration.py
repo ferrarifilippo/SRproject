@@ -256,18 +256,18 @@ def rigid_transform_3D(A, B):
 if __name__ == '__main__':
 
     # Set image path
-    img1_path = '/Users/filippoferrari/Desktop/SRproject/beer_new/image/rgb_image0.jpg'
-    depth_img1_path = '/Users/filippoferrari/Desktop/SRproject/beer_new/depth/depth_image0.png'
-    img2_path = '/Users/filippoferrari/Desktop/SRproject/beer_new/image/rgb_image1.jpg'
-    depth_img2_path = '/Users/filippoferrari/Desktop/SRproject/beer_new/depth/depth_image1.png'
+    img1_path = ''
+    depth_img1_path = ''
+    img2_path = ''
+    depth_img2_path = ''
 
     img1 = np.asarray(cv2.imread(img1_path), dtype=np.uint8)
     img2 = np.asarray(cv2.imread(img2_path), dtype=np.uint8)
     depth_img1 = np.asarray(cv2.imread(depth_img1_path), dtype=np.float64)
     depth_img2 = np.asarray(cv2.imread(depth_img2_path), dtype=np.float64)
 
-    pcd1 = o3d.io.read_point_cloud('/Users/filippoferrari/Desktop/SRproject/beer_new/conversion_result_0.pcd')
-    pcd2 = o3d.io.read_point_cloud('/Users/filippoferrari/Desktop/SRproject/beer_new/conversion_result_1.pcd')
+    pcd1 = o3d.io.read_point_cloud('')
+    pcd2 = o3d.io.read_point_cloud('')
 
     print(img1)
     print(img2)
