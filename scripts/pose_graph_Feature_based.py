@@ -159,15 +159,20 @@ def full_registration(pcds, max_correspondence_distance_coarse, max_corresponden
 
 if __name__ == "__main__":
 
-    object = "beer"
+    object = "drone"
 
     # Path
     if object == "beer":
-        depth_path = ['/Users/filippoferrari/Desktop/SRproject/beer_new/depth/depth_image%d.png' % i for i in range(4)]
-        rgb_path = ['/Users/filippoferrari/Desktop/SRproject/beer_new/image/rgb_image%d.jpg' % i for i in range(4)]
-        pcds_paths = ['/Users/filippoferrari/Desktop/SRproject/beer_new/conversion_result_%d.pcd' % i for i in range(4)]
+        depth_path = ['/Users/filippoferrari/Desktop/SRproject/beer/depth/%d.png' % i for i in range(24)]
+        rgb_path = ['/Users/filippoferrari/Desktop/SRproject/beer/image/%d.jpg' % i for i in range(24)]
+        # pcds_paths = ['/Users/filippoferrari/Desktop/SRproject/beer_new/conversion_result_%d.pcd' % i for i in range(4)]
+        pcds_paths = ['/Users/filippoferrari/Desktop/SRproject/beer/conversion_result_%d.pcd' % i for i in range(24)]
     elif object == "drone":
-        pcds_paths = ['/Users/filippoferrari/Desktop/SRproject/drone/conversion_result_%d.pcd' % i for i in range(4)]
+        pcds_paths = ['/Users/filippoferrari/Desktop/SRproject/dataset/drone/conversion_result_%d.pcd' % i for i in range(4)]
+    elif object == "box":
+        pcds_paths = ['/Users/filippoferrari/Desktop/SRproject/box/conversion_result_%d.pcd' % i for i in range(23)]
+    else:
+        exit()
 
     # Define voxel size to Downsample
     voxel_size = 0.001
@@ -175,8 +180,8 @@ if __name__ == "__main__":
     pcds_down = load_point_clouds(voxel_size, pcds_paths)
     o3d.visualization.draw_geometries(pcds_down)
 
-    relative_camera_poses = relative_camera_poses_all(rgb_path, depth_path, origin_pcds)
-    print('pose shape:', relative_camera_poses.shape)
+    #relative_camera_poses = relative_camera_poses_all(rgb_path, depth_path, origin_pcds)
+    #print('pose shape:', relative_camera_poses.shape)
 
     print("Full registration ...")
     max_correspondence_distance_coarse = voxel_size * 10

@@ -51,11 +51,11 @@ def preprocess_point_cloud(pcd, voxel_size):
 
 def get_boundary(source_pcd):
 
-    # Intrinsic parameter for Realsense D415
+    # Intel RealSense R200 camera parameters
     depth_scaling_factor = 999.99
-    focal_length = 597.522
-    img_center_x = 312.885
-    img_center_y = 239.870
+    focal_length = 452 #mm
+    img_center_x = 0
+    img_center_y = 0
 
     x_min = np.min(np.asarray(source_pcd.points)[:, 0])
     x_max = np.max(np.asarray(source_pcd.points)[:, 0])
@@ -183,10 +183,11 @@ def reproject_point2d(points, depth_source_path):
     :param points:
     :return: 3d points
     """
+    # Intel RealSense R200 camera parameters
     depth_scaling_factor = 999.99
-    focal_length = 597.522 ## mm
-    img_center_x = 312.885
-    img_center_y = 239.870
+    focal_length = 452 #mm
+    img_center_x = 0
+    img_center_y = 0
 
     depth = np.array(o3d.io.read_image(depth_source_path), np.float32)
     points_3d = np.array([])

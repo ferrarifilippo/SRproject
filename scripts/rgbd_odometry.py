@@ -7,10 +7,10 @@ if __name__ == "__main__":
     pinhole_camera_intrinsic = o3d.camera.PinholeCameraIntrinsic(
         o3d.camera.PinholeCameraIntrinsicParameters.PrimeSenseDefault)
     #rgbd_data = o3d.data.SampleRedwoodRGBDImages()
-    source_color = o3d.io.read_image('/home/filippo/PROJECT/src/ur5-jpc/results/rgb_image.png')
-    source_depth = o3d.io.read_image('/home/filippo/PROJECT/src/ur5-jpc/results/depth_image.png')
-    target_color = o3d.io.read_image('/home/filippo/PROJECT/src/ur5-jpc/results/rgb_image2.png')
-    target_depth = o3d.io.read_image('/home/filippo/PROJECT/src/ur5-jpc/results/depth_image2.png')
+    source_color = o3d.io.read_image('')
+    source_depth = o3d.io.read_image('')
+    target_color = o3d.io.read_image('')
+    target_depth = o3d.io.read_image('')
 
     source_rgbd_image = o3d.geometry.RGBDImage.create_from_color_and_depth(
         source_color, source_depth)

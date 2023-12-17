@@ -9,11 +9,11 @@ from kornia_moons.feature import draw_LAF_matches
 from registration import match_ransac
 from utility.utils import get_boundary
 
-# Intel RealSense D415
+# Intel RealSense R200
 depth_scaling_factor = 999.99
-focal_length = 597.522  ## mm
-img_center_x = 312.885
-img_center_y = 239.870
+focal_length = 452 #mm
+img_center_x = 0
+img_center_y = 0
 
 def load_torch_image(fname):
     img = K.image_to_tensor(cv2.imread(fname), False).float() / 255. # Normalized Tensor

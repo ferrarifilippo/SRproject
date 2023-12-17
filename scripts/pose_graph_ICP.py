@@ -4,12 +4,14 @@ from transformations.SIFT import SIFT_Transformation
 from registration import draw_registration_result
 from glob import glob
 import matplotlib.pyplot as plt
+import imageio
 
 # Load point clouds
 def load_point_clouds(voxel_size=0.0, pcds_paths=None):
     pcds = []
-    print('len demo_icp_pcds_paths:', len(pcds_paths))
-    # demo_icp_pcds = o3d.data.DemoICPPointClouds()
+    print('len pcds_paths:', len(pcds_paths))
+    pcds_paths.reverse()
+    
     for path in pcds_paths:
         pcd = o3d.io.read_point_cloud(path)
         pcd_down = pcd.voxel_down_sample(voxel_size=voxel_size)
@@ -26,7 +28,7 @@ def load_point_clouds(voxel_size=0.0, pcds_paths=None):
 
 def load_orginal_point_clouds(voxel_size=0.0, pcds_paths=None):
     pcds = []
-    print('len demo_icp_pcds_paths:', len(pcds_paths))
+    print('len icp_pcds_paths:', len(pcds_paths))
     # demo_icp_pcds = o3d.data.DemoICPPointClouds()
     for path in pcds_paths:
         pcd = o3d.io.read_point_cloud(path)
@@ -97,6 +99,8 @@ def full_registration(pcds, max_correspondence_distance_coarse, max_corresponden
                                                  uncertain=False))
     return pose_graph
 
+    
+
 if __name__ == "__main__":
 
     object = "drone"
@@ -104,15 +108,20 @@ if __name__ == "__main__":
     if object == "beer":
         #depth_path = ['/Users/filippoferrari/Desktop/SRproject/dataset/beer3/depth/%d.png' % i for i in range(12)]
         #rgb_path = ['/Users/filippoferrari/Desktop/SRproject/dataset/beer3/image/%d.jpg' % i for i in range(12)]
-        pcds_paths = ['/Users/filippoferrari/Desktop/SRproject/beer/conversion_result_%d.pcd' % i for i in range(4)]
+        pcds_paths = ['/Users/filippoferrari/Desktop/SRproject/beer/conversion_result_%d.pcd' % i for i in range(24)]
         #pcds_paths = ['/Users/filippoferrari/Desktop/SRproject/dataset/beer/conversion_result_0.pcd', '/Users/filippoferrari/Desktop/SRproject/dataset/beer/conversion_result_2.pcd']
     elif object == "drone":
-        pcds_paths = ['/Users/filippoferrari/Desktop/SRproject/drone/conversion_result_%d.pcd' % i for i in range(23)]
+        pcds_paths = ['/Users/filippoferrari/Desktop/SRproject/drone2/conversion_result_%d.pcd' % i for i in range(27)]
+        #pcds_paths = ['/Users/filippoferrari/Desktop/SRproject/dataset/drone/conversion_result_%d.pcd' % i for i in range(4)]
+    elif object == "box":
+        pcds_paths = ['/Users/filippoferrari/Desktop/SRproject/box/conversion_result_%d.pcd' % i for i in range(23)]
+    else:
+        exit()
 
     # pcds_paths.reverse()
     # Define voxel size to Downsample
     voxel_size = 0.001
-    origin_pcds = load_orginal_point_clouds(voxel_size, pcds_paths)
+    #origin_pcds = load_orginal_point_clouds(voxel_size, pcds_paths)
     pcds_down = load_point_clouds(voxel_size, pcds_paths)
     o3d.visualization.draw_geometries(pcds_down)
 
@@ -143,8 +152,10 @@ if __name__ == "__main__":
     for point_id in range(len(pcds_down)):
         print(pose_graph.nodes[point_id].pose)
         accumulated_pcd += pcds_down[point_id].transform(pose_graph.nodes[point_id].pose)
-    o3d.visualization.draw_geometries([accumulated_pcd])
-    # o3d.io.write_point_cloud('accumulated_%s.pcd'%object, accumulated_pcd)
+
+    # Use draw_geometries_with_animation_callback
+    #o3d.visualization.draw_geometries([accumulated_pcd])
+    o3d.io.write_point_cloud('accumulated_%s.pcd'%object, accumulated_pcd)
 
     # y = np.asarray(accumulated_pcd.points)[:, 1]
     # y_mean = np.mean(y)
@@ -176,3 +187,6 @@ if __name__ == "__main__":
 
     vis.run()
     vis.destroy_window()
+
+
+   

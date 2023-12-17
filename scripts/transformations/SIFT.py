@@ -5,9 +5,9 @@ import cv2
 import matplotlib.pyplot as plt
 from registration import match_ransac
 from utility.utils import get_boundary
-########################################################################################################################
+
 # Intrinsic parameter
-########################################################################################################################
+
 K = np.array(
     [[451.985, 0.0, 239.785],
      [0.0, 451.934, 179.271],
@@ -16,9 +16,9 @@ K = np.array(
 intrinsic = o3d.camera.PinholeCameraIntrinsic()
 intrinsic.intrinsic_matrix = K
 print(intrinsic.intrinsic_matrix)
-########################################################################################################################
+
 # Feature matching using SIFT algorithm
-########################################################################################################################
+
 # Find transformation matrix from corresponding points based on SIFT
 def SIFT_Transformation(img1, img2, depth_img1, depth_img2, source_pcd, target_pcd, distance_ratio=0.6):
 
@@ -37,10 +37,8 @@ def SIFT_Transformation(img1, img2, depth_img1, depth_img2, source_pcd, target_p
 
     # Intel RealSense R200
     depth_scaling_factor = 999.99
-    focal_length = 452 ## mm
-    #img_center_x = 312.885
+    focal_length = 452 #mm
     img_center_x = 0
-    #img_center_y = 239.870
     img_center_y = 0
 
     # sift = cv2.xfeatures2d.SIFT_create() 

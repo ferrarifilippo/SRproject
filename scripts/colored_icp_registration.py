@@ -19,8 +19,8 @@ def draw_registration_result(source, target, transformation):
 
 print("Load two point clouds and show initial pose ...")
 #ply_data = o3d.data.DemoColoredICPPointClouds()
-source = o3d.io.read_point_cloud('/Users/filippoferrari/Desktop/SRproject/beer_new/conversion_result_0.pcd') #pcd path
-target = o3d.io.read_point_cloud('/Users/filippoferrari/Desktop/SRproject/beer_new/conversion_result_1.pcd') #pcd path
+source = o3d.io.read_point_cloud('') #pcd path
+target = o3d.io.read_point_cloud('') #pcd path
 
 if __name__ == "__main__":
     # Draw initial alignment.

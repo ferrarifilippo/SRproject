@@ -5,8 +5,8 @@ import cv2
 # Intel RealSense R200 camera parameters
 fx = 451.984580
 fy = 451.933982
-cx = 239.795335
-cy = 179.271315
+cx = 0
+cy = 0
 
 depth_scaling_factor = 1000
 img_center_x = cx

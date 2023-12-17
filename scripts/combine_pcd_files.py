@@ -24,9 +24,7 @@ def main():
     dir_path = os.path.dirname(os.path.realpath(__file__))
     voxel_size = 0.005
 
-    data_path = '/Users/filippoferrari/Desktop/SRproject/dataset/beer'
-    #data_path = '/home/filippo/PROJECT/src/ur5-jpc/results/beer'
-
+    data_path = ''
     # Matrice intrinseca (projection matrix)
     intrinsic_matrix = np.array([[449.640411, 0.000000, 239.564668, 0.000000],
                                 [0.000000, 449.876526, 178.818522, 0.000000],
