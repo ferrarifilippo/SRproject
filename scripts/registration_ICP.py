@@ -9,9 +9,9 @@ import imageio
 # Load point clouds
 def load_point_clouds(voxel_size=0.0, pcds_paths=None):
     pcds = []
-    print('len pcds_paths:', len(pcds_paths))
+    #print('len pcds_paths:', len(pcds_paths))
     pcds_paths.reverse()
-    
+
     for path in pcds_paths:
         pcd = o3d.io.read_point_cloud(path)
         pcd_down = pcd.voxel_down_sample(voxel_size=voxel_size)
@@ -103,7 +103,7 @@ def full_registration(pcds, max_correspondence_distance_coarse, max_corresponden
 
 if __name__ == "__main__":
 
-    object = "drone"
+    object = "cerbero"
 
     if object == "beer":
         #depth_path = ['/Users/filippoferrari/Desktop/SRproject/dataset/beer3/depth/%d.png' % i for i in range(12)]
@@ -111,10 +111,14 @@ if __name__ == "__main__":
         pcds_paths = ['/Users/filippoferrari/Desktop/SRproject/beer/conversion_result_%d.pcd' % i for i in range(24)]
         #pcds_paths = ['/Users/filippoferrari/Desktop/SRproject/dataset/beer/conversion_result_0.pcd', '/Users/filippoferrari/Desktop/SRproject/dataset/beer/conversion_result_2.pcd']
     elif object == "drone":
-        pcds_paths = ['/Users/filippoferrari/Desktop/SRproject/drone2/conversion_result_%d.pcd' % i for i in range(27)]
+        pcds_paths = ['/Users/filippoferrari/Desktop/SRproject/dataset/drone2/conversion_result_%d.pcd' % i for i in range(27)]
         #pcds_paths = ['/Users/filippoferrari/Desktop/SRproject/dataset/drone/conversion_result_%d.pcd' % i for i in range(4)]
     elif object == "box":
         pcds_paths = ['/Users/filippoferrari/Desktop/SRproject/box/conversion_result_%d.pcd' % i for i in range(23)]
+    elif object == "turtle":
+        pcds_paths = ['/Users/filippoferrari/Desktop/SRproject/turtle/conversion_result_%d.pcd' %i for i in range(25)]
+    elif object == "cerbero":
+        pcds_paths = ['/Users/filippoferrari/Desktop/SRproject/cerbero/conversion_result_%d.pcd' %i for i in range(24)]
     else:
         exit()
 
@@ -123,7 +127,7 @@ if __name__ == "__main__":
     voxel_size = 0.001
     #origin_pcds = load_orginal_point_clouds(voxel_size, pcds_paths)
     pcds_down = load_point_clouds(voxel_size, pcds_paths)
-    o3d.visualization.draw_geometries(pcds_down)
+    #o3d.visualization.draw_geometries(pcds_down)
 
     print("Full registration ...")
     max_correspondence_distance_coarse = voxel_size * 15

@@ -1,8 +1,8 @@
 import open3d as o3d
 import matplotlib.pyplot as plt
 
-depth_raw = o3d.io.read_image("")
-color_raw = o3d.io.read_image("")
+depth_raw = o3d.io.read_image("/Users/filippoferrari/Desktop/SRproject/dataset/beer/image/0.jpg")
+color_raw = o3d.io.read_image("/Users/filippoferrari/Desktop/SRproject/dataset/beer/depth/0.png")
 
 rgbd_image = o3d.geometry.RGBDImage.create_from_color_and_depth(
     color_raw, depth_raw)

@@ -25,13 +25,13 @@ def rotate_around(vis):
     vis.update_renderer()
 
 
-pcd_file = '/Users/filippoferrari/Desktop/SRproject/accumulated_mini_drone.pcd'
+pcd_file = '/Users/filippoferrari/Desktop/SRproject/result_ambient.pcd'
 
 pcd = o3d.io.read_point_cloud(pcd_file)
 
 # Ottieni le coordinate dei punti come un array NumPy
 points = np.asarray(pcd.points)
-theta = np.radians(-60)
+theta = np.radians(90)
 R = np.array([[1, 0, 0],
               [0, np.cos(theta), -np.sin(theta)],
               [0, np.sin(theta), np.cos(theta)]])
@@ -41,23 +41,24 @@ rotated_points = points.dot(R.T)
 # Aggiorna le coordinate dei punti nella nuvola di punti
 pcd.points = o3d.utility.Vector3dVector(rotated_points)
 
-# Ottieni le coordinate dei punti come un array NumPy
-points = np.asarray(pcd.points)
-R = np.array([[np.cos(np.pi), -np.sin(np.pi), 0],
-              [np.sin(np.pi), np.cos(np.pi), 0],
-              [0, 0, 1]])
+# # Ottieni le coordinate dei punti come un array NumPy
+# points = np.asarray(pcd.points)
+# R = np.array([[np.cos(np.pi), -np.sin(np.pi), 0],
+#               [np.sin(np.pi), np.cos(np.pi), 0],
+#               [0, 0, 1]])
+#
+# # Applica la rotazione alla nuvola di punti
+# rotated_points = points.dot(R.T)
+# # Aggiorna le coordinate dei punti nella nuvola di punti
+# pcd.points = o3d.utility.Vector3dVector(rotated_points)
 
-# Applica la rotazione alla nuvola di punti
-rotated_points = points.dot(R.T)
-# Aggiorna le coordinate dei punti nella nuvola di punti
-pcd.points = o3d.utility.Vector3dVector(rotated_points)
-
-#voxel_size = 0.0001
-#pcd = pcd.voxel_down_sample(voxel_size=voxel_size)
-# o3d.visualization.draw_geometries([pcd])
+voxel_size = 0.0001
+pcd = pcd.voxel_down_sample(voxel_size=voxel_size)
+o3d.visualization.draw_geometries([pcd])
 
 vis = o3d.visualization.Visualizer()
 vis.create_window('3DReconstructed')
+#vis.create_window('Point Cloud')
 
 # Align the plane with the horizontal axis
 #align_plane_with_horizontal(pcd)
@@ -70,7 +71,7 @@ print("numero punti senza piano:", len(pcd_without_plane.points))
 vis.add_geometry(pcd_without_plane)
 
 # Register callback animation functions
-vis.register_animation_callback(rotate_around)
+#vis.register_animation_callback(rotate_around)
 
 
 vis.run()
